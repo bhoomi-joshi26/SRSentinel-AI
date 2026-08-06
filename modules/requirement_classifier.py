@@ -13,67 +13,104 @@ class RequirementClassifier:
     def __init__(self):
 
         self.functional_keywords = [
-
-            "shall",
             "allow",
-            "login",
-            "logout",
-            "register",
-            "upload",
-            "download",
+            "shall allow",
+            "provide",
+            "create",
+            "add",
             "insert",
             "update",
             "delete",
-            "generate",
-            "display",
-            "search",
-            "authenticate",
-            "calculate",
-            "verify",
-            "send",
-            "receive",
-            "print",
-            "store",
-            "create",
+            "remove",
             "modify",
+            "edit",
+            "store",
+            "save",
+            "retrieve",
+            "search",
+            "find",
+            "display",
             "view",
+            "generate",
+            "print",
             "export",
             "import",
-            "retrieve"
+            "upload",
+            "download",
+            "send",
+            "receive",
+            "issue",
+            "return",
+            "maintain",
+            "track",
+            "book",
+            "register",
+            "login",
+            "logout",
+            "verify",
+            "calculate"
 
         ]
-
 
         self.non_functional_keywords = [
 
-            "performance",
-            "response time",
-            "processing time",
+            # Security
             "security",
+            "secure",
             "authentication",
+            "authorize",
             "authorization",
+            "password",
+            "passwords",
+            "encrypt",
             "encryption",
-            "confidentiality",
             "privacy",
-            "reliability",
-            "availability",
+
+            # Performance
+            "performance",
+            "response",
+            "response time",
+            "respond",
+            "latency",
+            "within",
+            "second",
+            "seconds",
+            "milliseconds",
+
+            # Reliability
             "backup",
+            "restore",
             "recovery",
-            "usability",
-            "user friendly",
+            "availability",
+            "reliable",
+
+            # Scalability
+            "multiple users",
+            "multi-user",
+            "simultaneously",
+            "concurrent",
+            "concurrency",
+            "scalable",
+
+            # Maintainability
             "maintainability",
-            "scalability",
-            "compatibility",
-            "portability",
-            "accuracy",
-            "compliance",
-            "standard",
-            "regulation",
-            "timeout",
-            "response"
+            "maintainable",
+
+            # Usability
+            "user friendly",
+            "easy to use",
+            "usable",
+
+            # Compatibility
+            "compatible",
+            "browser",
+            "platform",
+
+            # Capacity
+            "24 hours",
+            "24 hour"
 
         ]
-
 
     # --------------------------------------------------
     # Split Requirements
@@ -82,10 +119,11 @@ class RequirementClassifier:
     def split_requirements(self, text):
 
         requirements = []
-
-        lines = re.split(r"\n+|\.\s+", text)
-
-
+        lines = [
+            line.strip()
+            for line in text.split("\n")
+            if line.strip()
+        ]
         for line in lines:
 
             line = line.strip()
@@ -94,10 +132,7 @@ class RequirementClassifier:
 
                 requirements.append(line)
 
-
         return requirements
-
-
 
     # --------------------------------------------------
     # Classify Single Requirement
@@ -107,11 +142,9 @@ class RequirementClassifier:
 
         sentence = requirement.lower()
 
-
         functional_score = 0
 
         non_functional_score = 0
-
 
         for keyword in self.functional_keywords:
 
@@ -119,38 +152,17 @@ class RequirementClassifier:
 
                 functional_score += 1
 
-
-
         for keyword in self.non_functional_keywords:
 
             if keyword in sentence:
 
                 non_functional_score += 1
 
-
-
-        if functional_score > non_functional_score:
-
-            return "Functional"
-
-
-
-        elif non_functional_score > functional_score:
-
-            return "Non Functional"
-
-
-
-        elif functional_score > 0:
-
-            return "Functional"
-
-
-
-        return "Other"
-
-
-
+            if non_functional_score > 0:
+                return "Non Functional"
+            elif functional_score > 0:
+                return "Functional"
+            return "Other"
     # --------------------------------------------------
     # Classify Complete Document
     # --------------------------------------------------
@@ -159,38 +171,27 @@ class RequirementClassifier:
 
         requirements = self.split_requirements(text)
 
-
         functional = []
 
         non_functional = []
 
         others = []
 
-
         for requirement in requirements:
 
-
             result = self.classify_requirement(requirement)
-
-
 
             if result == "Functional":
 
                 functional.append(requirement)
 
-
-
             elif result == "Non Functional":
 
                 non_functional.append(requirement)
 
-
-
             else:
 
                 others.append(requirement)
-
-
 
         return {
 
@@ -202,8 +203,6 @@ class RequirementClassifier:
 
         }
 
-
-
     # --------------------------------------------------
     # Statistics
     # --------------------------------------------------
@@ -212,13 +211,11 @@ class RequirementClassifier:
 
         result = self.classify_document(text)
 
-
         functional_count = len(result["functional"])
 
         non_functional_count = len(result["non_functional"])
 
         other_count = len(result["others"])
-
 
         total = (
             functional_count
@@ -227,7 +224,6 @@ class RequirementClassifier:
             +
             other_count
         )
-
 
         return {
 
@@ -241,8 +237,6 @@ class RequirementClassifier:
 
         }
 
-
-
     # --------------------------------------------------
     # Percentage
     # --------------------------------------------------
@@ -253,36 +247,32 @@ class RequirementClassifier:
 
         total = stats["total"]
 
-
         if total == 0:
 
             return {
 
-                "functional_percentage":0,
+                "functional_percentage": 0,
 
-                "non_functional_percentage":0,
+                "non_functional_percentage": 0,
 
-                "others_percentage":0
+                "others_percentage": 0
 
             }
-
 
         return {
 
             "functional_percentage":
-                round((stats["functional"]/total)*100,2),
+                round((stats["functional"]/total)*100, 2),
 
 
             "non_functional_percentage":
-                round((stats["non_functional"]/total)*100,2),
+                round((stats["non_functional"]/total)*100, 2),
 
 
             "others_percentage":
-                round((stats["others"]/total)*100,2)
+                round((stats["others"]/total)*100, 2)
 
         }
-
-
 
     # --------------------------------------------------
     # Complete Classification Report
@@ -290,13 +280,9 @@ class RequirementClassifier:
 
     def generate_report(self, text):
 
-
         result = self.classify_document(text)
 
-
         statistics = self.get_statistics(text)
-
-
 
         return {
 
