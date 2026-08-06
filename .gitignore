@@ -4,17 +4,13 @@ __pycache__/
 
 # Virtual Environment
 venv/
-env/
+.env
 
-# Streamlit
-.streamlit/
+# Jupyter
+.ipynb_checkpoints/
 
-# Model files (optional)
-*.pkl
-
-# Dataset (if private)
-# dataset/
-
-# OS files
+# OS
 .DS_Store
-Thumbs.db
+
+# Large files
+*.zip
