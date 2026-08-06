@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+
+# Streamlit
+.streamlit/
+
+# Model files (optional)
+*.pkl
+
+# Dataset (if private)
+# dataset/
+
+# OS files
+.DS_Store
+Thumbs.db
