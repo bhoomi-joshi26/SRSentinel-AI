@@ -9,7 +9,7 @@ Supported Formats
 ===========================================================
 """
 import os
-import PyPDF2
+from PyPDF2 import PdfReader
 from docx import Document
 class DocumentReader:
     def __init__(self):
@@ -42,7 +42,7 @@ class DocumentReader:
     # --------------------------------------------------
     def read_pdf(self, uploaded_file):
         text = ""
-        pdf = PyPDF2.PdfReader(uploaded_file)
+        pdf = PdfReader(uploaded_file)
         for page in pdf.pages:
             content = page.extract_text()
             if content:
