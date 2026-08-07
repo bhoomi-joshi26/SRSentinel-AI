@@ -4,6 +4,10 @@ SRSentinel AI
 Main Streamlit Application
 =========================================================
 """
+import sys
+import streamlit as st
+
+st.write(sys.version)
 
 import os
 import streamlit as st
