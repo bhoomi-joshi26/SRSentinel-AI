@@ -4,10 +4,17 @@ SRSentinel AI
 Main Streamlit Application
 =========================================================
 """
-import sys
 import streamlit as st
+import sys
 
 st.write(sys.version)
+
+try:
+    from pypdf import PdfReader
+    st.success("pypdf imported successfully")
+except Exception as e:
+    st.error(f"Import failed: {e}")
+    st.stop()
 
 import os
 import streamlit as st
