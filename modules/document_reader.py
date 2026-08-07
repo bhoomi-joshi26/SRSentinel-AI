@@ -9,7 +9,7 @@ Supported Formats
 ===========================================================
 """
 import os
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from docx import Document
 class DocumentReader:
     def __init__(self):
